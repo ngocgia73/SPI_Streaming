@@ -1,0 +1,30 @@
+There are 2 types of SPI transactions:
+
+1. Full duplex Transaction: ( fix 4 bytes): The SPI Master need to send and receive 4 bytes at the same time. SPI Master will send 
+   data following "Command Format" and receive "Status" from spi_soc module at the same time
+2. Half duplex Transaction ( fix 128 bytes): This transaction is used to send or receive data. Send data will be send 
+   Video / JPEG/ AUdio, Receive data will be Audio Talkback. For this transaction, data only send/receive in one way and prefer 
+   using DMA to save time.
+
+// Exchange Command:
+1. Wait for gpio_soc Pin Pulled Low
+2. Send 4 bytes  - Receive 4 bytes
+3. Parse the returned 4 bytes and get the command result.
+
+// send audio 
+1. Wait for gpio_soc Pin Pulled Low
+2. Send 4 bytes (Command Send Audio)  - Receive 4 bytes
+3. Parse the returned 4 bytes and make sure that return data accept send full audio data
+4. Wait for gpio Pin Pulled Low
+5. Send 128 bytes Audio
+
+// Send Video
+1. Wait for gpio_soc Pin Pulled Low
+2. Send 4 bytes (Command Send VideO)  - Receive 4 bytes
+3. Parse the returned 4 bytes and make sure that return data accept send full video data
+4. Wait for gpio_soc Pin Pulled Low
+5. Send 128 bytes Video
+6. Retry step 4 and step 5 for 4 times to finish 512 bytes Video
+
+// noted 
+both Command Format and Status receive from spi_soc we need to specific define  
