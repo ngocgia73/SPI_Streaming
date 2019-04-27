@@ -109,7 +109,7 @@ static ssize_t socspi_sync(struct socspi_data *socspi, struct spi_message *messa
 // =====GPIO======
 // We use a GPIO Interrupt (called CVInt Pin)  connect to the Master
 // The SPI Master can only start the SPI Transaction once the CVInt Pin is low.
-tatic irqreturn_t gpio_isr_handle (int irq, void *devid)
+static irqreturn_t gpio_isr_handle (int irq, void *devid)
 {
 	// signal to continue transfer data
 	// look into socspi_send_command funtion : we call socspi_wait_interrupt function
